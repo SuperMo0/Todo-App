@@ -1,0 +1,112 @@
+@import url('./../../index.css');
+@import url('./../taskCard/Card.module.css');
+
+
+.dim {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(51, 51, 50, 0.36);
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+}
+
+.modal {
+    width: min(750px, 90%);
+    min-height: 750px;
+    background-color: var(--bg);
+    display: grid;
+    grid-auto-rows: min-content min-content auto;
+    /* overflow-y: scroll; */
+}
+
+.modal hr {
+    margin-top: 15px;
+    grid-column: span 2;
+}
+
+.title-section {
+    padding: 3rem 1rem;
+    background: linear-gradient(90deg, var(--blue2), var(--blue3)25%);
+}
+
+.title-section h1 {
+
+    color: var(--text2);
+}
+
+.meta {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding-top: 1rem;
+    padding-inline: 1rem;
+    row-gap: 8px;
+    align-items: center;
+}
+
+.meta-container img {
+    width: 35px;
+    height: 35px;
+}
+
+.meta-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.status-modal {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.red {
+    composes: status-modal;
+    background: linear-gradient(90deg, var(--red3), var(--red2));
+}
+
+.green {
+    composes: status-modal;
+    background: linear-gradient(90deg, var(--green1), var(--green2));
+}
+
+.yellow {
+    composes: status-modal;
+    background: linear-gradient(90deg, var(--yellow1), var(--yellow2));
+}
+
+.description-container {
+    grid-column: span 2;
+}
+
+.description-container p {
+    color: var(--subText3);
+    font-weight: light;
+}
+
+.button {
+    width: 40%;
+    height: 50px;
+    border-radius: 15px;
+    border: none;
+    background: linear-gradient(90deg, var(--blue1), var(--blue2));
+    font-size: 1rem;
+}
+
+.buttons-container {
+    grid-column: 1/-1;
+    display: flex;
+    justify-content: space-around;
+    align-self: flex-end;
+    margin-bottom: 16px;
+}
+
+.description-input {
+    color: var(--subText3);
+    font-weight: light;
+    border: none;
+    background-color: aquamarine;
+    /* height: 200px; */
+}

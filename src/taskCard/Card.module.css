@@ -2,9 +2,9 @@
 
 .card {
     display: grid;
-    padding: 5px 20px;
     grid-template-rows: subgrid;
-    grid-row: 1/4;
+    padding: 5px 20px;
+    grid-row: span 3;
     cursor: pointer;
     transition: transform 300ms ease-in-out;
 }
@@ -14,25 +14,23 @@
 
 }
 
-
-.card-container p:nth-child(1) {
+.card p:nth-child(1) {
+    max-width: 80%;
     font-size: 2rem;
     color: var(--text);
 }
 
-.card-container p:nth-child(2) {
+.card p:nth-child(2) {
     color: var(--subText3);
 }
 
-.card-container p:nth-child(3) {
+.card p:nth-child(3) {
     color: var(--subText3);
 }
 
 
 .red-card {
     composes: card;
-    width: 350px;
-    height: 150px;
     border-radius: 35px;
     background: linear-gradient(to bottom right, var(--red1), var(--red2));
 }
@@ -40,16 +38,12 @@
 
 .yellow-card {
     composes: card;
-    width: 350px;
-    height: 150px;
     border-radius: 35px;
     background: linear-gradient(to bottom right, var(--yellow1), var(--yellow2));
 }
 
 .green-card {
     composes: card;
-    width: 350px;
-    height: 150px;
     border-radius: 35px;
     background: linear-gradient(to bottom right, var(--green1), var(--green2));
 }

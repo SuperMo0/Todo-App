@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    gap: 10px;
+}
+
+.container * {
+    cursor: pointer;
+    transition: transform 200ms ease-in-out;
+    box-shadow: 5px 5px 10px rgb(216, 216, 216);
+}
+
+.container *:hover {
+    transform: scale(1.1);
+
+}

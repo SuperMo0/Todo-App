@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import TaskModal from '../TaskModal/TaskModal'
 import avatar1 from './../assets/avatar1.png'
 import styles from './HomePage.module.css'
 import gear from './../assets/gear2.svg'
@@ -10,17 +11,21 @@ import tagsLogo from './../assets/tags.png'
 import Avatar from '../avatar/Avatar'
 import Card from '../taskCard/Card'
 import add from './../assets/add.png'
-export default function HomePage({ user }) {
+export default function HomePage({ user, dispatch }) {
+
     const name = user.name;
     const avatar = user.avatar;
-    const todoList = user.todoList;
+    const taskList = user.taskList;
+    const [modal, setModal] = useState(null);
 
-    // console.log(avatar);
+    function handleNewTaskClick() {
+        dispatch({ type: "create new task" });
+        setModal((modal) => ({ edit: true, task: "new" }));
 
+    }
 
     return (
         <div className={styles.page}>
-
             <div className={styles.header}>
                 <img className={styles.gear} src={gear} alt="" />
                 <img src={time} alt="" />
@@ -28,7 +33,6 @@ export default function HomePage({ user }) {
                 <img src={magnifier} alt="" />
                 <input placeholder='Search Todos....' className={styles.search} type="text" />
             </div>
-
 
             <div className={styles['side-bar']}>
                 <div className={styles['side-container']}>
@@ -46,24 +50,27 @@ export default function HomePage({ user }) {
                     <p className={styles['logout']}>Log out</p>
                 </div>
 
-
             </div>
 
-
             <div className={styles.main}>
-                <h1>My Tasks</h1>
-                <div className={styles['add-task']} >
+                <h1 onClick={handleNewTaskClick}>My Tasks</h1>
+                <div onClick={handleNewTaskClick} className={styles['add-task']} >
                     <p>Add New Task</p>
                     <img src={add} alt="" />
                 </div>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
 
+                {taskList.map((task =>
+                    <Card task={task}></Card>
+                ))}
             </div>
 
+
+
+
+            {modal && <TaskModal dispatch={dispatch} setModal={setModal} edit={modal.edit} task={modal.task == "new" ? taskList[taskList.length - 1] : modal.task}></TaskModal>}
+
+            {/*            <TaskModal edit={true} task={{ title: "", description: "", dateCreated: "today", tag: "", color: "red-card", status: "done" }}></TaskModal>
+*/}
         </div>
     )
 }

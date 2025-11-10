@@ -59,7 +59,7 @@ export default function NewUserPage({ handleNewUser }) {
     function handleGetStarted() {
         if (!avatar) return;
         if (name.trim() == "") return;
-        else handleNewUser({ name: name, avatar: avatar, todoList: [] });
+        else handleNewUser({ name: name, avatar: avatar });
     }
 
     return (

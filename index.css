@@ -4,9 +4,11 @@
     --subText: #888888;
     --subText2: #A0A0A0;
     --text: #333333;
+    --text2: #252525;
     --subText3: #3f3e3e;
     --blue1: #5E8BEF;
-    --blue2: #4AA0FF;
+    --blue2: #67adf8;
+    --blue3: #4AA0FF;
     --green2: #66CC99;
     --green1: #b8e6d0;
     --red1: #FF8A8A;
@@ -31,6 +33,26 @@
     box-sizing: border-box;
 }
 
+button {
+    cursor: pointer;
+}
+
 img {
     display: block;
+}
+
+input,
+button {
+    border: none;
+    width: min-content;
+}
+
+input:focus {
+    outline: none;
+
+}
+
+[contentEditable="true"]:focus {
+    border: none;
+    outline: none;
 }
