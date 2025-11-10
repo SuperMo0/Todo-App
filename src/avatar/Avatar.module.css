@@ -1,0 +1,64 @@
+.avatar {
+    height: 100px;
+    width: 100px;
+    background-color: var(--green2);
+    border-radius: 50%;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    display: grid;
+    place-items: center;
+    font-size: 0.9rem;
+    text-align: center;
+    color: var(Text);
+    font-weight: lighter;
+    color: var(--subText3);
+    background-size: cover;
+    mask-image: linear-gradient(to top, transparent 1%, black 25%);
+}
+
+
+
+.avatar-border-1 {
+    display: grid;
+    place-items: center;
+    height: 120px;
+    width: 120px;
+    background-color: transparent;
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #333333 transparent #333333 #333333;
+
+    transition: transform 1s linear;
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+
+.avatar-border-2 {
+    display: grid;
+    place-items: center;
+    height: 110px;
+    width: 110px;
+    background-color: transparent;
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #333333 #333333 #333333 transparent;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    transition: transform 1s linear;
+}
+
+.avatar-container {
+    display: grid;
+    grid-template-columns: 1;
+    grid-template-rows: 1;
+    place-items: center;
+    cursor: pointer;
+    transition: transform 1000ms;
+
+    &:hover {
+        transition: transform 200ms;
+        transform: scale(1.1);
+    }
+}

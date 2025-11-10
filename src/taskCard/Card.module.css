@@ -1,0 +1,129 @@
+@import url('./../../index.css');
+
+.card {
+    display: grid;
+    padding: 5px 20px;
+    grid-template-rows: subgrid;
+    grid-row: 1/4;
+    cursor: pointer;
+    transition: transform 300ms ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+
+}
+
+
+.card-container p:nth-child(1) {
+    font-size: 2rem;
+    color: var(--text);
+}
+
+.card-container p:nth-child(2) {
+    color: var(--subText3);
+}
+
+.card-container p:nth-child(3) {
+    color: var(--subText3);
+}
+
+
+.red-card {
+    composes: card;
+    width: 350px;
+    height: 150px;
+    border-radius: 35px;
+    background: linear-gradient(to bottom right, var(--red1), var(--red2));
+}
+
+
+.yellow-card {
+    composes: card;
+    width: 350px;
+    height: 150px;
+    border-radius: 35px;
+    background: linear-gradient(to bottom right, var(--yellow1), var(--yellow2));
+}
+
+.green-card {
+    composes: card;
+    width: 350px;
+    height: 150px;
+    border-radius: 35px;
+    background: linear-gradient(to bottom right, var(--green1), var(--green2));
+}
+
+.status {
+    background-color: rgb(255, 255, 255);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-top: 10px;
+    position: relative;
+}
+
+.done {
+    composes: status;
+    background-image: url('./../assets/done.png');
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.yellow-working {
+    composes: status;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background-color: var(--yellow2);
+        box-shadow: 1px 1px 10px var(--subText3);
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+    }
+
+}
+
+
+
+.red-working {
+    composes: status;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background-color: var(--red2);
+        box-shadow: 1px 1px 10px var(--subText3);
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+    }
+
+}
+
+.green-working {
+    composes: status;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background-color: var(--green2);
+        box-shadow: 1px 1px 10px var(--subText3);
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+    }
+
+}
