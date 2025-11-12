@@ -19,8 +19,7 @@ export default function App() {
 
     }, [user]);
 
-    if (user)
-        return <HomePage dispatch={dispatch} user={user}> </HomePage>
+    if (user) { return <HomePage dispatch={dispatch} user={user}> </HomePage> }
     else {
         return (
             <NewUserPage handleNewUser={handleNewUser}></NewUserPage>

@@ -1,24 +1,26 @@
 import React, { useState } from 'react'
 import styles from './PriorityPicker.module.css'
-import pstyles from './../TaskModal/TaskModal.module.css'
 
-export default function PriorityPicker(priority) {
+export default function PriorityPicker({ edit, priority, priorityRef }) {
 
-    const [picked, setPicked] = useState(null);
+    const [picked, setPicked] = useState(priority);
 
     function handleClick(priority) {
         setPicked(priority);
-        priority.current = priority;
+        priorityRef.current = priority;
     }
 
-    let style = {
-        border: "2px solid #333333"
+    if (edit)
+        return (
+            <div className={styles.container}>
+                <div onClick={() => { handleClick("red-card") }} className={styles.red} picked={String(picked == 'red-card')} >high</div>
+                <div onClick={() => { handleClick("yellow-card") }} className={styles.yellow} picked={String(picked == 'yellow-card')} >mid</div>
+                <div onClick={() => { handleClick("green-card") }} className={styles.green} picked={String(picked == 'green-card')} >low</div>
+            </div>
+        )
+    else {
+        if (priority == "red-card") return <div className={styles.red}>high</div>
+        else if (priority == "yellow-card") return <div className={styles.yellow}>mid</div>
+        else if (priority == "green-card") return <div className={styles.green}>low</div>
     }
-    return (
-        <div className={styles.container}>
-            {picked == "red" ? <div onClick={() => { handleClick("red-card") }} style={style} className={pstyles.red} ></div> : <div onClick={() => { handleClick("red") }} className={pstyles.red} ></div>}
-            {picked == "yellow" ? <div onClick={() => { handleClick("yellow-card") }} style={style} className={pstyles.yellow} ></div> : <div onClick={() => { handleClick("yellow") }} className={pstyles.yellow} ></div>}
-            {picked == "green" ? <div onClick={() => { handleClick("green-card") }} style={style} className={pstyles.green} ></div> : <div onClick={() => { handleClick("green") }} className={pstyles.green} ></div>}
-        </div>
-    )
 }

@@ -14,11 +14,18 @@
 
 .modal {
     width: min(750px, 90%);
-    min-height: 750px;
+    height: 750px;
     background-color: var(--bg);
     display: grid;
     grid-auto-rows: min-content min-content auto;
-    /* overflow-y: scroll; */
+    overflow-y: scroll;
+    scrollbar-color: var(--blue1) var(--bg);
+    scrollbar-width: thin;
+    overscroll-behavior: none;
+}
+
+.modal img {
+    width: 30px;
 }
 
 .modal hr {
@@ -29,11 +36,8 @@
 .title-section {
     padding: 3rem 1rem;
     background: linear-gradient(90deg, var(--blue2), var(--blue3)25%);
-}
-
-.title-section h1 {
-
     color: var(--text2);
+    font-size: 1.5rem;
 }
 
 .meta {
@@ -56,26 +60,11 @@
     align-items: center;
 }
 
-.status-modal {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
+.meta-container+*:hover {
+    background-color: rgba(0, 0, 0, 0.036);
 }
 
-.red {
-    composes: status-modal;
-    background: linear-gradient(90deg, var(--red3), var(--red2));
-}
 
-.green {
-    composes: status-modal;
-    background: linear-gradient(90deg, var(--green1), var(--green2));
-}
-
-.yellow {
-    composes: status-modal;
-    background: linear-gradient(90deg, var(--yellow1), var(--yellow2));
-}
 
 .description-container {
     grid-column: span 2;
@@ -93,6 +82,15 @@
     border: none;
     background: linear-gradient(90deg, var(--blue1), var(--blue2));
     font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 300ms ease-in-out;
+}
+
+.button:hover {
+    transform: translateY(-3px);
 }
 
 .buttons-container {
@@ -100,13 +98,36 @@
     display: flex;
     justify-content: space-around;
     align-self: flex-end;
-    margin-bottom: 16px;
+    margin: 16px 0;
 }
 
-.description-input {
+.buttons-container img {
+    width: 30px;
+    height: 30px;
+    animation: enter-icon 300ms ease-in-out backwards;
+}
+
+@keyframes enter-icon {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: none;
+        opacity: 1;
+    }
+
+}
+
+[contenteditable=true]:empty:not(:focus)::before {
+    content: "start here . . .";
     color: var(--subText3);
-    font-weight: light;
-    border: none;
-    background-color: aquamarine;
-    /* height: 200px; */
+    font-style: italic;
+    pointer-events: none;
+}
+
+[contenteditable="true"]:hover {
+    cursor: text;
+    background-color: rgba(0, 0, 0, 0.055);
 }

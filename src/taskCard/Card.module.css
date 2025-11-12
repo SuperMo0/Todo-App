@@ -3,121 +3,89 @@
 .card {
     display: grid;
     grid-template-rows: subgrid;
-    padding: 5px 20px;
-    grid-row: span 3;
+    padding: 15px 20px;
+    grid-row: span 4;
     cursor: pointer;
     transition: transform 300ms ease-in-out;
+    border-radius: 35px;
+    color: var(--subText3);
+    font-weight: 250;
+    font-size: clamp(1rem, calc(0.889rem + 0.032vw), 1.5rem);
 }
 
 .card:hover {
     transform: scale(1.05);
-
 }
 
 .card p:nth-child(1) {
     max-width: 80%;
-    font-size: 2rem;
     color: var(--text);
+    font-weight: 500;
 }
-
-.card p:nth-child(2) {
-    color: var(--subText3);
-}
-
-.card p:nth-child(3) {
-    color: var(--subText3);
-}
-
 
 .red-card {
     composes: card;
-    border-radius: 35px;
+
     background: linear-gradient(to bottom right, var(--red1), var(--red2));
 }
 
 
 .yellow-card {
     composes: card;
-    border-radius: 35px;
+
     background: linear-gradient(to bottom right, var(--yellow1), var(--yellow2));
 }
 
 .green-card {
     composes: card;
-    border-radius: 35px;
+
     background: linear-gradient(to bottom right, var(--green1), var(--green2));
 }
 
 .status {
     background-color: rgb(255, 255, 255);
-    width: 40px;
-    height: 40px;
+    min-width: 30px;
+    height: 30px;
     border-radius: 50%;
     margin-left: auto;
     margin-top: 10px;
     position: relative;
 }
 
-.done {
-    composes: status;
+[status="in progress"]::before {
+    content: "";
+    position: absolute;
+    min-width: 20px;
+    height: 20px;
+    box-shadow: 1px 1px 10px var(--subText3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+
+.card [status="done"] {
     background-image: url('./../assets/done.png');
     background-size: 32px 32px;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.yellow-working {
-    composes: status;
-
+.yellow-card [status="in progress"] {
     &::before {
-        content: "";
-        position: absolute;
-        width: 24px;
-        height: 24px;
         background-color: var(--yellow2);
-        box-shadow: 1px 1px 10px var(--subText3);
-        border-radius: 50%;
-        top: 50%;
-        left: 50%;
-        transform: translateY(-50%) translateX(-50%);
     }
-
 }
 
-
-
-.red-working {
-    composes: status;
-
+.green-card [status="in progress"] {
     &::before {
-        content: "";
-        position: absolute;
-        width: 24px;
-        height: 24px;
-        background-color: var(--red2);
-        box-shadow: 1px 1px 10px var(--subText3);
-        border-radius: 50%;
-        top: 50%;
-        left: 50%;
-        transform: translateY(-50%) translateX(-50%);
-    }
-
-}
-
-.green-working {
-    composes: status;
-
-    &::before {
-        content: "";
-        position: absolute;
-        width: 24px;
-        height: 24px;
         background-color: var(--green2);
-        box-shadow: 1px 1px 10px var(--subText3);
-        border-radius: 50%;
-        top: 50%;
-        left: 50%;
-        transform: translateY(-50%) translateX(-50%);
     }
+}
 
+.red-card [status="in progress"] {
+    &::before {
+
+        background-color: var(--red2);
+    }
 }

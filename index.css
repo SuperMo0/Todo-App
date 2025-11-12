@@ -22,7 +22,7 @@
 }
 
 #root {
-    height: 100vh;
+    background-color: #252525;
 }
 
 * {
@@ -44,7 +44,6 @@ img {
 input,
 button {
     border: none;
-    width: min-content;
 }
 
 input:focus {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import TaskModal from '../TaskModal/TaskModal'
+import EditTaskModal from '../editTaskModal/EditTaskModal'
 import avatar1 from './../assets/avatar1.png'
 import styles from './HomePage.module.css'
 import gear from './../assets/gear2.svg'
@@ -11,26 +11,28 @@ import tagsLogo from './../assets/tags.png'
 import Avatar from '../avatar/Avatar'
 import Card from '../taskCard/Card'
 import add from './../assets/add.png'
+import ShowTaskModal from '../showTaskModal/ShowTaskModal'
+import { getClockTime } from '../utils'
 export default function HomePage({ user, dispatch }) {
 
     const name = user.name;
     const avatar = user.avatar;
     const taskList = user.taskList;
-    const [modal, setModal] = useState(null);
+    const [modal, setModal] = useState({ type: "none", task: "" });
 
     function handleNewTaskClick() {
         dispatch({ type: "create new task" });
-        setModal((modal) => ({ edit: true, task: "new" }));
-
+        setModal({ type: "new", task: "new" });
     }
+
 
     return (
         <div className={styles.page}>
             <div className={styles.header}>
                 <img className={styles.gear} src={gear} alt="" />
-                <img src={time} alt="" />
-                <div className={styles.timer}>10:30 PM</div>
-                <img src={magnifier} alt="" />
+                <img className={styles["timeIcon"]} src={time} alt="" />
+                <div className={styles.timer}>{getClockTime()}</div>
+                <img className={styles.magnifier} src={magnifier} alt="" />
                 <input placeholder='Search Todos....' className={styles.search} type="text" />
             </div>
 
@@ -49,28 +51,24 @@ export default function HomePage({ user, dispatch }) {
 
                     <p className={styles['logout']}>Log out</p>
                 </div>
-
             </div>
 
             <div className={styles.main}>
-                <h1 onClick={handleNewTaskClick}>My Tasks</h1>
+                <h1>My Tasks</h1>
                 <div onClick={handleNewTaskClick} className={styles['add-task']} >
                     <p>Add New Task</p>
                     <img src={add} alt="" />
                 </div>
 
                 {taskList.map((task =>
-                    <Card task={task}></Card>
+                    <Card setModal={setModal} key={task.id} task={task}></Card>
                 ))}
             </div>
 
+            {modal.type == 'new' && <EditTaskModal dispatch={dispatch} setModal={setModal} task={taskList[taskList.length - 1]}></EditTaskModal>}
+            {modal.type == 'edit' && <EditTaskModal dispatch={dispatch} setModal={setModal} task={modal.task}></EditTaskModal>}
+            {modal.type == 'show' && <ShowTaskModal dispatch={dispatch} setModal={setModal} task={modal.task}></ShowTaskModal>}
 
-
-
-            {modal && <TaskModal dispatch={dispatch} setModal={setModal} edit={modal.edit} task={modal.task == "new" ? taskList[taskList.length - 1] : modal.task}></TaskModal>}
-
-            {/*            <TaskModal edit={true} task={{ title: "", description: "", dateCreated: "today", tag: "", color: "red-card", status: "done" }}></TaskModal>
-*/}
         </div>
     )
 }
