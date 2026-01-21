@@ -4,15 +4,13 @@
     display: flex;
     flex-direction: column;
     padding: 1.2rem;
-    min-height: 180px;
-    
+    min-height: 180px; 
     border-radius: var(--radius); 
     background-color: var(--surface);
     box-shadow: var(--shadow-soft);
     border: 1px solid transparent;
-    
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
     user-select: none;
     position: relative;
     overflow: hidden;
@@ -24,26 +22,21 @@
 }
 
 .cardDone {
-    opacity: 0.85;
+    opacity: 0.75;
     background-color: #F8FAFC; 
     border-color: #CBD5E1;
 }
 
-
-.red-card {
-    background-color: var(--red1); 
-    border-color: var(--red2);    
+.cardDone .title {
+    text-decoration: line-through;
+    color: var(--subText3);
 }
 
-.yellow-card {
-    background-color: var(--yellow1);
-    border-color: var(--yellow2);
-}
 
-.green-card {
-    background-color: var(--green1); 
-    border-color: var(--green2);
-}
+.red-card { border-left: 4px solid var(--red3); }
+.yellow-card { border-left: 4px solid var(--yellow2); }
+.green-card { border-left: 4px solid var(--green3); }
+
 
 .header {
     display: flex;
@@ -62,28 +55,58 @@
     flex-grow: 1;
 }
 
+.statusBtn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2; 
+}
+
+.btnPending {
+    color: var(--subText2);
+}
+
+.btnPending:hover {
+    color: var(--green3);
+    background-color: var(--green1);
+    transform: scale(1.1);
+}
+
+.btnDone {
+    color: var(--green3);
+}
+
+.btnDone:hover {
+    transform: scale(1.1);
+    color: var(--red2); 
+}
+
 .description {
     font-size: 0.9rem;
     color: var(--text);
     opacity: 0.8;
     margin-bottom: auto; 
     padding-bottom: 1rem;
-    
     display: -webkit-box;
     -webkit-line-clamp: 2; 
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
     line-height: 1.5;
 }
 
 .divider {
     height: 1px;
-    background-color: rgba(0,0,0, 0.08);
+    background-color: rgba(0,0,0, 0.06);
     margin: 0 0 0.8rem 0; 
     width: 100%;
 }
-
 
 .footer {
     display: flex;
@@ -104,51 +127,4 @@
     color: var(--subText3);
     font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.statusContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 28px;
-    height: 28px;
-}
-
-
-.progressDot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative;
-}
-
-.progressDot::after {
-    content: '';
-    position: absolute;
-    inset: 2px;
-    border-radius: 50%;
-    opacity: 0.8;
-}
-
-.red-card .progressDot::after { background-color: var(--red3); }
-.yellow-card .progressDot::after { background-color: var(--yellow2); }
-.green-card .progressDot::after { background-color: var(--green4); }
-
-.doneIcon {
-    font-size: 1.6rem;
-    color: var(--green3);
-    background-color: white;
-    border-radius: 50%;
-  
-    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-@keyframes popIn {
-    0% { transform: scale(0); opacity: 0; }
-    60% { transform: scale(1.2); }
-    100% { transform: scale(1); opacity: 1; }
 }

@@ -1,16 +1,16 @@
 :root {
-    /* --- Improved Palette --- */
-    /* Background: Cool Gray (Darker than before to create contrast) */
-    --bg: #EEF2F6;
+    /* --- Refined Palette (Warmer, Less Clinical) --- */
+    /* Background: Soft Stone/Gray */
+    --bg: #F1F5F9; 
     
-    /* Surface: Off-White (Less harsh than pure #FFF) */
+    /* Surface: Pure White for contrast */
     --surface: #FFFFFF; 
     
     /* Text */
-    --text: #334155;
-    --text2: #1E293B;
-    --subText: #94A3B8;
-    --subText3: #64748B;
+    --text: #475569;      /* Slate 600 */
+    --text2: #1E293B;     /* Slate 800 (Headings) */
+    --subText: #94A3B8;   /* Slate 400 */
+    --subText3: #64748B;  /* Slate 500 */
 
     /* Accents */
     --blue1: #60A5FA;
@@ -31,11 +31,10 @@
     
     --radius: 16px;
 
-    /* --- IMPROVED ELEVATION --- */
-    /* Stronger, "floating" shadow */
-    --shadow-float: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 5px 10px -5px rgba(0, 0, 0, 0.05);
-    /* Soft internal shadow for inputs */
-    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    /* --- Shadows --- */
+    --shadow-float: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-drop: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 #root {
@@ -60,6 +59,7 @@ button {
     cursor: pointer;
     font-family: inherit;
     border: none;
+    background: none;
 }
 
 img {
@@ -69,7 +69,21 @@ img {
 
 input:focus,
 [contentEditable="true"]:focus {
-    outline: 2px solid var(--blue2);
-    outline-offset: 1px;
-    border-radius: 6px;
+    outline: none;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #CBD5E1;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #94A3B8;
 }

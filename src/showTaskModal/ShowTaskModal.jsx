@@ -47,7 +47,7 @@ export default function ShowTaskModal({ task, setModal, dispatch }) {
                             <span>Date Created</span>
                         </div>
                         <div className={styles.metaValue}>
-                            <div className={styles.readOnlyBox}>
+                            <div className={styles.readOnlyText}>
                                 {task.dateCreated}
                             </div>
                         </div>
@@ -59,7 +59,7 @@ export default function ShowTaskModal({ task, setModal, dispatch }) {
                             <span>Due Date</span>
                         </div>
                         <div className={styles.metaValue}>
-                            <div className={styles.readOnlyBox}>
+                            <div className={styles.readOnlyText}>
                                 {task.dueDate || "No due date"}
                             </div>
                         </div>
@@ -71,15 +71,8 @@ export default function ShowTaskModal({ task, setModal, dispatch }) {
                             <span>Status</span>
                         </div>
                         <div className={styles.metaValue}>
-                            <div className={styles.readOnlyBox} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                {task.status === "done" ? (
-                                    <FaCheckCircle size={16} color="var(--green3)" />
-                                ) : (
-                                    <FaHourglassHalf size={16} color="var(--subText3)" />
-                                )}
-                                <span>
-                                    {task.status === "done" ? "Done" : "In Progress"}
-                                </span>
+                            <div className={styles.statusBadge} data-status={task.status}>
+                                {task.status === "done" ? "Done" : "In Progress"}
                             </div>
                         </div>
                     </div>
@@ -90,7 +83,7 @@ export default function ShowTaskModal({ task, setModal, dispatch }) {
                             <span>Tag</span>
                         </div>
                         <div className={styles.metaValue}>
-                            <div className={styles.readOnlyBox}>
+                            <div className={styles.readOnlyText}>
                                 {task.tag || "None"}
                             </div>
                         </div>
@@ -111,7 +104,7 @@ export default function ShowTaskModal({ task, setModal, dispatch }) {
 
                 <div className={styles.descriptionSection}>
                     <h1>Description</h1>
-                    <div className={styles.descriptionContent}>
+                    <div className={styles.descriptionDisplay}>
                         {task.description || "No description provided."}
                     </div>
                 </div>

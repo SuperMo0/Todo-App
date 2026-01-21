@@ -9,7 +9,8 @@ import {
     FaTags,
     FaFlag,
     FaCheckCircle,
-    FaHourglassHalf
+    FaHourglassHalf,
+    FaChevronDown
 } from "react-icons/fa";
 
 export default function EditTaskModal({ task, setModal, dispatch, isNew, availableTags = [] }) {
@@ -17,11 +18,13 @@ export default function EditTaskModal({ task, setModal, dispatch, isNew, availab
     const titleRef = useRef(null);
     const descriptionRef = useRef(null);
     const dueDateRef = useRef(null);
-    const statusRef = useRef(null);
     const priorityRef = useRef(task.priority);
 
     const [tagValue, setTagValue] = useState(task.tag || "");
     const [showTagDropdown, setShowTagDropdown] = useState(false);
+
+    const [statusValue, setStatusValue] = useState(task.status || "in progress");
+    const [showStatusDropdown, setShowStatusDropdown] = useState(false);
 
     const [popup, setPopup] = useState({
         show: false,
@@ -32,8 +35,11 @@ export default function EditTaskModal({ task, setModal, dispatch, isNew, availab
 
     useEffect(() => {
         function handleClickOutside(event) {
-            if (!event.target.closest(`.${styles.metaValue}`)) {
+            if (!event.target.closest(`.${styles.tagWrapper}`)) {
                 setShowTagDropdown(false);
+            }
+            if (!event.target.closest(`.${styles.statusWrapper}`)) {
+                setShowStatusDropdown(false);
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
@@ -47,7 +53,7 @@ export default function EditTaskModal({ task, setModal, dispatch, isNew, availab
             description: descriptionRef.current.textContent.trim(),
             dueDate: dueDateRef.current.value,
             tag: tagValue.trim(),
-            status: statusRef.current.value,
+            status: statusValue,
             priority: priorityRef.current
         };
     }
@@ -161,19 +167,40 @@ export default function EditTaskModal({ task, setModal, dispatch, isNew, availab
 
                     <div className={styles.metaRow}>
                         <div className={styles.metaLabel}>
-                            {task.status === 'done' ? <FaCheckCircle /> : <FaHourglassHalf />}
+                            {statusValue === 'done' ? <FaCheckCircle /> : <FaHourglassHalf />}
                             <span>Status</span>
                         </div>
-                        <div className={styles.metaValue}>
-                            <select
-                                key={task.id}
-                                className={styles.selectInput}
-                                ref={statusRef}
-                                defaultValue={task.status || "in progress"}
+                        <div className={`${styles.metaValue} ${styles.statusWrapper}`}>
+                            <div
+                                className={styles.customSelectTrigger}
+                                onClick={() => setShowStatusDropdown(!showStatusDropdown)}
                             >
-                                <option value="in progress">In Progress</option>
-                                <option value="done">Done</option>
-                            </select>
+                                <span>{statusValue === 'done' ? "Done" : "In Progress"}</span>
+                                <FaChevronDown className={styles.chevron} />
+                            </div>
+
+                            {showStatusDropdown && (
+                                <ul className={styles.customDropdown}>
+                                    <li
+                                        className={styles.dropdownOption}
+                                        onClick={() => {
+                                            setStatusValue("in progress");
+                                            setShowStatusDropdown(false);
+                                        }}
+                                    >
+                                        <FaHourglassHalf className={styles.optionIcon} /> In Progress
+                                    </li>
+                                    <li
+                                        className={styles.dropdownOption}
+                                        onClick={() => {
+                                            setStatusValue("done");
+                                            setShowStatusDropdown(false);
+                                        }}
+                                    >
+                                        <FaCheckCircle className={styles.optionIcon} /> Done
+                                    </li>
+                                </ul>
+                            )}
                         </div>
                     </div>
 
@@ -181,7 +208,7 @@ export default function EditTaskModal({ task, setModal, dispatch, isNew, availab
                         <div className={styles.metaLabel}>
                             <FaTags /> <span>Tag</span>
                         </div>
-                        <div className={styles.metaValue}>
+                        <div className={`${styles.metaValue} ${styles.tagWrapper}`}>
                             <input
                                 className={styles.textInput}
                                 value={tagValue}
@@ -194,11 +221,11 @@ export default function EditTaskModal({ task, setModal, dispatch, isNew, availab
                             />
 
                             {showTagDropdown && filteredTags.length > 0 && (
-                                <ul className={styles.tagDropdown}>
+                                <ul className={styles.customDropdown}>
                                     {filteredTags.map((t, i) => (
                                         <li
                                             key={i}
-                                            className={styles.tagOption}
+                                            className={styles.dropdownOption}
                                             onClick={() => {
                                                 setTagValue(t);
                                                 setShowTagDropdown(false);

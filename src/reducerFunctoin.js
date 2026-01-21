@@ -7,6 +7,29 @@ export function reducerFunction(state, action) {
                 ...state,
                 taskList: [...state.taskList, action.task]
             }
+
+        case "edit task":
+            return {
+                ...state,
+                taskList: state.taskList.map((task) =>
+                    task.id === action.task.id ? action.task : task
+                )
+            }
+
+        case "new user":
+            return {
+                name: action.name,
+                avatar: action.avatar,
+                // FIX: Use the list passed from App.jsx, don't hardcode []
+                taskList: action.taskList || []
+            }
+
+        case "delete task":
+            return {
+                ...state,
+                taskList: state.taskList.filter((task) => task.id !== action.task.id)
+            }
+
         case "create new task":
             return {
                 ...state,
@@ -23,27 +46,6 @@ export function reducerFunction(state, action) {
                         status: "in progress"
                     }
                 ]
-            }
-
-        case "edit task":
-            return {
-                ...state,
-                taskList: state.taskList.map((task) =>
-                    task.id === action.task.id ? action.task : task
-                )
-            }
-
-        case "new user":
-            return {
-                name: action.name,
-                avatar: action.avatar,
-                taskList: []
-            }
-
-        case "delete task":
-            return {
-                ...state,
-                taskList: state.taskList.filter((task) => task.id !== action.task.id)
             }
 
         default:

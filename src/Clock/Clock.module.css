@@ -3,35 +3,26 @@
 .timerCard {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 0.8rem 1.5rem;
-    
+    gap: 8px;
+    padding: 0.5rem 1rem;
     background-color: var(--surface);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-float);
-    border: 1px solid rgba(255,255,255,0.6); 
+    border-radius: 50px;
+    box-shadow: var(--shadow-soft);
     
     color: var(--text2);
-    font-weight: 700;
-    font-size: 1.1rem; 
+    font-weight: 600;
+    font-size: 0.9rem;
     white-space: nowrap;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
     user-select: none;
-    letter-spacing: 0.5px;
-}
-
-.timerCard:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+    border: 1px solid transparent;
 }
 
 .icon {
     color: var(--blue2);
-    font-size: 1.2rem;
-    filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
+    font-size: 1rem;
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 600px) {
     .timerCard {
         display: none;
     }

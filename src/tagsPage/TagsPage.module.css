@@ -1,0 +1,73 @@
+@import url('/index.css');
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    height: 100%;
+}
+
+.header h1 {
+    font-size: 2rem;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header h1 svg {
+    color: var(--blue2);
+}
+
+.header p {
+    color: var(--subText3);
+    margin-top: 0.5rem;
+}
+
+.tagList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed var(--subText2);
+}
+
+.tagPill {
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    background-color: var(--surface);
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.tagPill:hover {
+    transform: translateY(-2px);
+    background-color: white;
+}
+
+.tagPill.active {
+    background-color: var(--blue2);
+    color: white;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.emptyState {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--subText3);
+    font-size: 1.2rem;
+    background: var(--surface);
+    border-radius: 16px;
+    border: 2px dashed var(--subText2);
+}

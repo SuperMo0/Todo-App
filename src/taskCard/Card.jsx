@@ -1,10 +1,20 @@
 import React from 'react'
 import styles from './Card.module.css'
-import { FaCheckCircle, FaHourglassHalf } from "react-icons/fa";
+import { FaCheckCircle, FaRegCircle } from "react-icons/fa";
 
-export default function Card({ task, setModal }) {
+export default function Card({ task, setModal, dispatch }) {
     const priorityClass = styles[task.priority] || styles['yellow-card'];
     const isDone = task.status === 'done';
+
+    function toggleStatus(e) {
+        e.stopPropagation();
+
+        const newStatus = isDone ? 'in progress' : 'done';
+        dispatch({
+            type: 'edit task',
+            task: { ...task, status: newStatus }
+        });
+    }
 
     return (
         <div
@@ -14,13 +24,13 @@ export default function Card({ task, setModal }) {
             <div className={styles.header}>
                 <h3 className={styles.title}>{task.title || "Untitled Task"}</h3>
 
-                <div className={styles.statusContainer} data-status={task.status}>
-                    {isDone ? (
-                        <FaCheckCircle className={styles.doneIcon} />
-                    ) : (
-                        <div className={styles.progressDot}></div>
-                    )}
-                </div>
+                <button
+                    className={`${styles.statusBtn} ${isDone ? styles.btnDone : styles.btnPending}`}
+                    onClick={toggleStatus}
+                    title={isDone ? "Mark as In Progress" : "Mark as Done"}
+                >
+                    {isDone ? <FaCheckCircle /> : <FaRegCircle />}
+                </button>
             </div>
 
             <p className={styles.description}>
