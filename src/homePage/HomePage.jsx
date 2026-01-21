@@ -1,74 +1,141 @@
 import React, { useState } from 'react'
 import EditTaskModal from '../editTaskModal/EditTaskModal'
-import avatar1 from './../assets/avatar1.png'
 import styles from './HomePage.module.css'
-import gear from './../assets/gear2.svg'
-import time from './../assets/time2.svg'
-import magnifier from './../assets/magnifier.svg'
-import tasksLogo from './../assets/tasks.png'
-import reportsLogo from './../assets/reports.png'
-import tagsLogo from './../assets/tags.png'
 import Avatar from '../avatar/Avatar'
 import Card from '../taskCard/Card'
-import add from './../assets/add.png'
 import ShowTaskModal from '../showTaskModal/ShowTaskModal'
-import { getClockTime } from '../utils'
+import Clock from '../Clock/Clock'
+import { getFullDate } from '../utils'
+
+import {
+    FaCog,
+    FaSearch,
+    FaClipboardList,
+    FaTags,
+    FaChartPie,
+    FaPlus,
+    FaSignOutAlt
+} from "react-icons/fa";
+
 export default function HomePage({ user, dispatch }) {
 
-    const name = user.name;
-    const avatar = user.avatar;
-    const taskList = user.taskList;
-    const [modal, setModal] = useState({ type: "none", task: "" });
+    const { name, avatar, taskList } = user
+    const [modal, setModal] = useState({ type: "none", task: "" })
+
+    const existingTags = taskList.map(t => t.tag).filter(Boolean);
+    const uniqueTags = [...new Set([...existingTags, "Work", "Personal", "Urgent", "Goal"])];
 
     function handleNewTaskClick() {
-        dispatch({ type: "create new task" });
-        setModal({ type: "new", task: "new" });
+        const draftTask = {
+            id: crypto.randomUUID(),
+            title: "",
+            description: "",
+            dueDate: "",
+            dateCreated: getFullDate(),
+            tag: "",
+            priority: "yellow-card",
+            status: "in progress"
+        };
+
+
+        setModal({ type: "new", task: draftTask });
     }
 
+    function handleLogout() {
+        localStorage.removeItem("user")
+        window.location.reload()
+    }
 
     return (
         <div className={styles.page}>
             <div className={styles.header}>
-                <img className={styles.gear} src={gear} alt="" />
-                <img className={styles["timeIcon"]} src={time} alt="" />
-                <div className={styles.timer}>{getClockTime()}</div>
-                <img className={styles.magnifier} src={magnifier} alt="" />
-                <input placeholder='Search Todos....' className={styles.search} type="text" />
+                <div className={styles.headerLeft}>
+                    <FaCog className={styles.gear} title="Settings" />
+                    <Clock />
+                </div>
+
+                <div className={styles.searchContainer}>
+                    <FaSearch className={styles.searchIcon} />
+                    <input
+                        placeholder='Search Todos...'
+                        className={styles.search}
+                        type="text"
+                    />
+                </div>
             </div>
 
-            <div className={styles['side-bar']}>
-                <div className={styles['side-container']}>
-                    <h1>MENU</h1>
-                    <button className={styles['side-button']} ><img src={tasksLogo} alt="" /> My Tasks</button>
+            <div className={styles.sidebar}>
+                <div className={styles.sidebarContainer}>
+                    <h1 className={styles.menuTitle}>MENU</h1>
 
-                    <button className={styles['side-button']} > <img src={tagsLogo} alt="" /> Tags</button>
+                    <button className={styles.sideButton}>
+                        <FaClipboardList className={styles.icon} />
+                        <span>My Tasks</span>
+                    </button>
 
-                    <button className={styles['side-button']} > <img src={reportsLogo} alt="" />Reports</button>
-                    <div className={styles.avatar}>
-                        <Avatar avatar={avatar}></Avatar>
+                    <button className={styles.sideButton}>
+                        <FaTags className={styles.icon} />
+                        <span>Tags</span>
+                    </button>
+
+                    <button className={styles.sideButton}>
+                        <FaChartPie className={styles.icon} />
+                        <span>Reports</span>
+                    </button>
+
+                    <div className={styles.userInfo}>
+                        <div className={styles.avatarWrapper}>
+                            <Avatar avatar={avatar} />
+                        </div>
+                        <p className={styles.userName}>{name}</p>
+                        <button onClick={handleLogout} className={styles.logout}>
+                            <FaSignOutAlt /> Log out
+                        </button>
                     </div>
-                    <p className={styles['user-name']}>{name}</p>
-
-                    <p className={styles['logout']}>Log out</p>
                 </div>
             </div>
 
             <div className={styles.main}>
-                <h1>My Tasks</h1>
-                <div onClick={handleNewTaskClick} className={styles['add-task']} >
-                    <p>Add New Task</p>
-                    <img src={add} alt="" />
+                <div className={styles.mainHeader}>
+                    <h1>My Tasks</h1>
+                    <button onClick={handleNewTaskClick} className={styles.addTaskBtn}>
+                        <span>Add New Task</span>
+                        <FaPlus />
+                    </button>
                 </div>
 
-                {taskList.map((task =>
-                    <Card setModal={setModal} key={task.id} task={task}></Card>
-                ))}
+                <div className={styles.grid}>
+                    {taskList.map((task) => (
+                        <Card setModal={setModal} key={task.id} task={task} />
+                    ))}
+                </div>
             </div>
 
-            {modal.type == 'new' && <EditTaskModal dispatch={dispatch} setModal={setModal} task={taskList[taskList.length - 1]}></EditTaskModal>}
-            {modal.type == 'edit' && <EditTaskModal dispatch={dispatch} setModal={setModal} task={modal.task}></EditTaskModal>}
-            {modal.type == 'show' && <ShowTaskModal dispatch={dispatch} setModal={setModal} task={modal.task}></ShowTaskModal>}
-
+            {modal.type === 'new' && (
+                <EditTaskModal
+                    dispatch={dispatch}
+                    setModal={setModal}
+                    task={modal.task}
+                    isNew={true}
+                    availableTags={uniqueTags}
+                />
+            )}
+            {modal.type === 'edit' && (
+                <EditTaskModal
+                    dispatch={dispatch}
+                    setModal={setModal}
+                    task={modal.task}
+                    isNew={false}
+                    availableTags={uniqueTags}
+                />
+            )}
+            {modal.type === 'show' && (
+                <ShowTaskModal
+                    dispatch={dispatch}
+                    setModal={setModal}
+                    task={modal.task}
+                />
+            )}
         </div>
     )
 }

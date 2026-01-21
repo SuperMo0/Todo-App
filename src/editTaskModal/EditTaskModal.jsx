@@ -1,89 +1,251 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import styles from './TaskModal.module.css'
-import dateCreated from './../assets/date-created.png'
-import date from './../assets/date.png'
-import statuss from './../assets/status.png'
 import PriorityPicker from '../PriorityPicker/PriorityPicker'
-import tags from './../assets/tags.png'
-import priorityimg from './../assets/priority.png'
-import markdone from './../assets/markdone.png'
 import { getFullDate } from '../utils'
+import Popup from '../popup/Popup'
+import {
+    FaCalendarAlt,
+    FaCalendarCheck,
+    FaTags,
+    FaFlag,
+    FaCheckCircle,
+    FaHourglassHalf
+} from "react-icons/fa";
 
-export default function EditTaskModal({ task, setModal, dispatch }) {
+export default function EditTaskModal({ task, setModal, dispatch, isNew, availableTags = [] }) {
 
-    const title = useRef(null);
-    const description = useRef(null);
-    const dueDate = useRef(null);
-    const tag = useRef(null);
-    const priority = useRef(task.priority);
+    const titleRef = useRef(null);
+    const descriptionRef = useRef(null);
+    const dueDateRef = useRef(null);
+    const statusRef = useRef(null);
+    const priorityRef = useRef(task.priority);
 
-    function click(e) {
-        if (e.target == e.currentTarget) {
-            task.title = title.current.textContent;
-            task.description = description.current.textContent;
-            task.dueDate = dueDate.current.value;
-            task.tag = tag.current.textContent;
-            task.priority = priority.current;
+    const [tagValue, setTagValue] = useState(task.tag || "");
+    const [showTagDropdown, setShowTagDropdown] = useState(false);
+
+    const [popup, setPopup] = useState({
+        show: false,
+        message: "",
+        title: "",
+        onConfirm: null
+    });
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (!event.target.closest(`.${styles.metaValue}`)) {
+                setShowTagDropdown(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    function getTaskData() {
+        return {
+            ...task,
+            title: titleRef.current.textContent.trim(),
+            description: descriptionRef.current.textContent.trim(),
+            dueDate: dueDateRef.current.value,
+            tag: tagValue.trim(),
+            status: statusRef.current.value,
+            priority: priorityRef.current
+        };
+    }
+
+    function saveAndClose() {
+        const updatedTask = getTaskData();
+
+        if (!updatedTask.title) {
+            setPopup({
+                show: true,
+                title: "Validation Error",
+                message: "Please enter a Task Name to save.",
+                onConfirm: null
+            });
+            return;
+        }
+
+        if (isNew) {
+            dispatch({ type: "add task", task: updatedTask });
+        } else {
+            dispatch({ type: "edit task", task: updatedTask });
+        }
+        setModal({ type: "none", task: "" });
+    }
+
+    function handleDeleteClick() {
+        if (isNew) {
             setModal({ type: "none", task: "" });
-            dispatch({ type: "edit task" });
+            return;
+        }
+
+        setPopup({
+            show: true,
+            title: "Confirm Deletion",
+            message: "Are you sure you want to delete this task?",
+            onConfirm: () => {
+                dispatch({ type: "delete task", task: task });
+                setModal({ type: "none", task: "" });
+            }
+        });
+    }
+
+    function handleBackgroundClick(e) {
+        if (e.target === e.currentTarget) {
+            const updatedTask = getTaskData();
+
+            if (!updatedTask.title) {
+                setModal({ type: "none", task: "" });
+            } else {
+                if (isNew) {
+                    dispatch({ type: "add task", task: updatedTask });
+                } else {
+                    dispatch({ type: "edit task", task: updatedTask });
+                }
+                setModal({ type: "none", task: "" });
+            }
         }
     }
 
+    const filteredTags = availableTags.filter(t =>
+        t.toLowerCase().includes(tagValue.toLowerCase())
+    );
+
     return (
-        <div onClick={click} className={styles.dim}>
-            <div onScroll={(e) => {
-                console.log(222);
-            }} className={styles.modal}>
-                <div className={styles["title-section"]}>
-                    {<div ref={title} contentEditable={"true"} suppressContentEditableWarning={"true"}>{task.title}</div>}
-                </div>
-                <div className={styles.meta}>
-                    <div className={styles["meta-container"]}>
-                        <img src={dateCreated} alt="" />
-                        <p>Date Created</p>
-                    </div>
-                    <p>{task.dateCreated}</p>
+        <div onClick={handleBackgroundClick} className={styles.dim}>
+            {popup.show && (
+                <Popup
+                    title={popup.title}
+                    message={popup.message}
+                    onConfirm={popup.onConfirm}
+                    onClose={() => setPopup({ ...popup, show: false })}
+                />
+            )}
 
-                    <div className={styles["meta-container"]}>
-                        <img src={date} alt="" />
-                        <p>Due Date</p>
-                    </div>
-                    <input defaultValue={getFullDate()} ref={dueDate} type="date" />
-
-                    <div className={styles["meta-container"]}>
-                        <img src={statuss} alt="" />
-                        <p>Status</p>
-                    </div>
-                    <p style={{ display: "flex", gap: "8px" }}> <img src={task.status == "done" ? markdone : statuss} alt="" /> {task.status == "done" ? "Done" : "in progress"} </p>
-
-                    <div className={styles["meta-container"]}>
-                        <img src={tags} alt="" />
-                        <p>Tag</p>
-                    </div>
-                    <p ref={tag} contentEditable={true} suppressContentEditableWarning={"true"} >{task.tag}</p>
-
-                    <div className={styles["meta-container"]}>
-                        <img src={priorityimg} alt="" />
-                        <p>Priority</p>
-                    </div>
-                    <PriorityPicker edit={true} priority={task.priority} priorityRef={priority}></PriorityPicker>
-                    <hr />
-                    <div className={styles['description-container']}>
-                        <h1>Description</h1>
-                        <div ref={description} contentEditable={true} suppressContentEditableWarning={"true"}>{task.description}</div>
+            <div className={styles.modal}>
+                <div className={styles.titleSection}>
+                    <div
+                        className={styles.titleInput}
+                        ref={titleRef}
+                        contentEditable={true}
+                        suppressContentEditableWarning={true}
+                        placeholder="Untitled Task"
+                    >
+                        {task.title}
                     </div>
                 </div>
-                <div className={styles['buttons-container']}>
-                    <button onClick={() => { setModal({ type: "none", task: "" }); dispatch({ type: "delete task", task: task }) }} className={styles.button}>Delete Task</button>
-                    <button className={styles.button}>Mark as Complete</button>
+
+                <div className={styles.metaContainer}>
+                    <div className={styles.metaRow}>
+                        <div className={styles.metaLabel}>
+                            <FaCalendarAlt /> <span>Date Created</span>
+                        </div>
+                        <div className={styles.metaValue}>
+                            <div className={styles.readOnlyBox}>{task.dateCreated}</div>
+                        </div>
+                    </div>
+
+                    <div className={styles.metaRow}>
+                        <div className={styles.metaLabel}>
+                            <FaCalendarCheck /> <span>Due Date</span>
+                        </div>
+                        <div className={styles.metaValue}>
+                            <input
+                                className={styles.dateInput}
+                                defaultValue={task.dueDate || getFullDate()}
+                                ref={dueDateRef}
+                                type="date"
+                            />
+                        </div>
+                    </div>
+
+                    <div className={styles.metaRow}>
+                        <div className={styles.metaLabel}>
+                            {task.status === 'done' ? <FaCheckCircle /> : <FaHourglassHalf />}
+                            <span>Status</span>
+                        </div>
+                        <div className={styles.metaValue}>
+                            <select
+                                key={task.id}
+                                className={styles.selectInput}
+                                ref={statusRef}
+                                defaultValue={task.status || "in progress"}
+                            >
+                                <option value="in progress">In Progress</option>
+                                <option value="done">Done</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className={styles.metaRow}>
+                        <div className={styles.metaLabel}>
+                            <FaTags /> <span>Tag</span>
+                        </div>
+                        <div className={styles.metaValue}>
+                            <input
+                                className={styles.textInput}
+                                value={tagValue}
+                                onChange={(e) => {
+                                    setTagValue(e.target.value);
+                                    setShowTagDropdown(true);
+                                }}
+                                onFocus={() => setShowTagDropdown(true)}
+                                placeholder="Select or type a tag..."
+                            />
+
+                            {showTagDropdown && filteredTags.length > 0 && (
+                                <ul className={styles.tagDropdown}>
+                                    {filteredTags.map((t, i) => (
+                                        <li
+                                            key={i}
+                                            className={styles.tagOption}
+                                            onClick={() => {
+                                                setTagValue(t);
+                                                setShowTagDropdown(false);
+                                            }}
+                                        >
+                                            {t}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className={styles.metaRow}>
+                        <div className={styles.metaLabel}>
+                            <FaFlag /> <span>Priority</span>
+                        </div>
+                        <div className={styles.metaValue}>
+                            <PriorityPicker edit={true} priority={task.priority} priorityRef={priorityRef} />
+                        </div>
+                    </div>
                 </div>
 
+                <hr className={styles.divider} />
 
+                <div className={styles.descriptionSection}>
+                    <h1>Description</h1>
+                    <div
+                        className={styles.descriptionContent}
+                        ref={descriptionRef}
+                        contentEditable={true}
+                        suppressContentEditableWarning={true}
+                        placeholder="Add a description..."
+                    >
+                        {task.description}
+                    </div>
+                </div>
+
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleDeleteClick} className={`${styles.button} ${styles.btnDanger}`}>
+                        {isNew ? "Discard" : "Delete"}
+                    </button>
+                    <button onClick={saveAndClose} className={`${styles.button} ${styles.btnPrimary}`}>
+                        Save Task
+                    </button>
+                </div>
             </div>
-
         </div>
-
-
-
     )
 }

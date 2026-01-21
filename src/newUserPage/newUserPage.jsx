@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import styles from './newUserPage.module.css'
-import { useRef } from 'react'
-import { useEffect } from 'react';
+import Avatar from '../avatar/Avatar'
 import avatar1 from './../assets/avatar1.png'
 import avatar2 from './../assets/avatar2.png'
 import avatar3 from './../assets/avatar3.png'
@@ -11,83 +10,74 @@ export default function NewUserPage({ handleNewUser }) {
 
     const [avatar, setAvatar] = useState(null);
     const [name, setName] = useState("");
-    const border1 = useRef(null);
-    const border2 = useRef(null);
-    const avatarContainer = useRef(null);
     const fileInput = useRef(null);
 
-    function handleNameInput(e) {
-        setName(e.target.value)
-    }
-
-    function handleMouseEnterAvatar() {
-        border1.current.style.transform = 'rotate(-1turn)';
-        border2.current.style.transform = 'rotate(1turn)';
-    }
-
-    function handleMouseLeaveAvatar() {
-        border1.current.style.transform = 'none';
-        border2.current.style.transform = 'none';
-    }
     function handleFileInput(e) {
-        if (e.target.files.length == 0) return;
+        if (e.target.files.length === 0) return;
         let image = e.target.files[0];
-
         let reader = new FileReader();
-        reader.onload = (image) => {
-            handleAvatarInput(image.target.result);
+        reader.onload = (e) => {
+            setAvatar(e.target.result);
         }
-
         reader.readAsDataURL(image);
     }
 
-    function handleAvatarInput(image) {
-        setAvatar(image);
-        border1.current.style.transform = 'rotate(-1turn)';
-        border2.current.style.transform = 'rotate(1turn)';
-        setTimeout(() => {
-            if (border1.current == null) return;
-            border1.current.style.transform = 'none';
-            border2.current.style.transform = 'none';
-        }, 1000)
-    }
-
-    function handleAvatarFile() {
+    function triggerFileUpload() {
         fileInput.current.click();
     }
 
     function handleGetStarted() {
-        if (!avatar) return;
-        if (name.trim() == "") return;
-        else handleNewUser({ name: name, avatar: avatar });
+        if (name.trim() === "") {
+            alert("Please enter your name!");
+            return;
+        }
+        const finalAvatar = avatar || avatar1;
+        handleNewUser({ name: name, avatar: finalAvatar });
     }
 
     return (
         <div className={styles.page}>
-            <input onChange={handleFileInput} ref={fileInput} className={styles['file-input']} type="file" accept='image/*' />
-            <div className={styles.modal} >
-                <h1 className={styles.text1}>WELCOME TO <span className={styles.logo}>ToDo</span> </h1>
-                <div onMouseEnter={handleMouseEnterAvatar} onMouseLeave={handleMouseLeaveAvatar} ref={avatarContainer} className={styles['avatar-container']}>
-                    <div ref={border1} className={styles['avatar-border-1']}>  </div>
-                    <div ref={border2} className={styles['avatar-border-2']}>  </div>
-                    {avatar == null ? <div onClick={handleAvatarFile} className={styles.avatar}>Choose profile Photo</div> :
-                        <div onClick={handleAvatarFile} style={{ backgroundImage: `url(${avatar})` }} className={styles.avatar}></div>
-                    }
-                </div>
-                <p className={styles['pick-text']}>or Choose from Library</p>
-                <div className={styles['avatars-list']}>
-                    <ul>
-                        <li onClick={(e) => { handleAvatarInput(avatar1) }}> <img src={avatar1} alt="" /></li>
-                        <li onClick={(e) => { handleAvatarInput(avatar2) }}> <img src={avatar2} alt="" /></li>
-                        <li onClick={(e) => { handleAvatarInput(avatar3) }}> <img src={avatar3} alt="" /></li>
-                        <li onClick={(e) => { handleAvatarInput(avatar4) }}> <img src={avatar4} alt="" /></li>
-                    </ul>
-                </div>
-                <div className={styles['name-input-ready']}>
-                    <input value={name} onChange={handleNameInput} type="text" placeholder='Enter Your Name' />
-                    <button onClick={handleGetStarted} className={styles['get-started']}>Get Started </button>
+            <input
+                onChange={handleFileInput}
+                ref={fileInput}
+                className={styles.hiddenInput}
+                type="file"
+                accept='image/*'
+            />
+
+            <div className={styles.modal}>
+                <div className={styles.header}>
+                    <h1 className={styles.title}>Welcome to <span className={styles.logo}>Todo</span></h1>
+                    <p className={styles.subtitle}>Let's get you set up</p>
                 </div>
 
+                <div onClick={triggerFileUpload} className={styles.avatarWrapper}>
+                    <Avatar avatar={avatar} />
+                    <span className={styles.uploadText}>Click to Upload Photo</span>
+                </div>
+
+                <div className={styles.presets}>
+                    <p>Or choose a preset:</p>
+                    <div className={styles.presetList}>
+                        <img onClick={() => setAvatar(avatar1)} src={avatar1} alt="" />
+                        <img onClick={() => setAvatar(avatar2)} src={avatar2} alt="" />
+                        <img onClick={() => setAvatar(avatar3)} src={avatar3} alt="" />
+                        <img onClick={() => setAvatar(avatar4)} src={avatar4} alt="" />
+                    </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <input
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        type="text"
+                        placeholder='Enter Your Name'
+                        className={styles.nameInput}
+                    />
+                    <button onClick={handleGetStarted} className={styles.submitBtn}>
+                        Get Started
+                    </button>
+                </div>
             </div>
         </div>
     )

@@ -1,91 +1,154 @@
-@import url('./../../index.css');
+@import url('/index.css');
 
 .card {
-    display: grid;
-    grid-template-rows: subgrid;
-    padding: 15px 20px;
-    grid-row: span 4;
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem;
+    min-height: 180px;
+    
+    border-radius: var(--radius); 
+    background-color: var(--surface);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid transparent;
+    
     cursor: pointer;
-    transition: transform 300ms ease-in-out;
-    border-radius: 35px;
-    color: var(--subText3);
-    font-weight: 250;
-    font-size: clamp(1rem, calc(0.889rem + 0.032vw), 1.5rem);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
 }
 
 .card:hover {
-    transform: scale(1.05);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
 }
 
-.card p:nth-child(1) {
-    max-width: 80%;
-    color: var(--text);
-    font-weight: 500;
+.cardDone {
+    opacity: 0.85;
+    background-color: #F8FAFC; 
+    border-color: #CBD5E1;
 }
+
 
 .red-card {
-    composes: card;
-
-    background: linear-gradient(to bottom right, var(--red1), var(--red2));
+    background-color: var(--red1); 
+    border-color: var(--red2);    
 }
 
-
 .yellow-card {
-    composes: card;
-
-    background: linear-gradient(to bottom right, var(--yellow1), var(--yellow2));
+    background-color: var(--yellow1);
+    border-color: var(--yellow2);
 }
 
 .green-card {
-    composes: card;
-
-    background: linear-gradient(to bottom right, var(--green1), var(--green2));
+    background-color: var(--green1); 
+    border-color: var(--green2);
 }
 
-.status {
-    background-color: rgb(255, 255, 255);
-    min-width: 30px;
-    height: 30px;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text2);
+    line-height: 1.4;
+    word-break: break-word; 
+    flex-grow: 1;
+}
+
+.description {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.8;
+    margin-bottom: auto; 
+    padding-bottom: 1rem;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+}
+
+.divider {
+    height: 1px;
+    background-color: rgba(0,0,0, 0.08);
+    margin: 0 0 0.8rem 0; 
+    width: 100%;
+}
+
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--text);
+}
+
+.tag, .date {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.label {
+    font-weight: 700;
+    color: var(--subText3);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.statusContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+}
+
+
+.progressDot {
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    margin-left: auto;
-    margin-top: 10px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: relative;
 }
 
-[status="in progress"]::before {
-    content: "";
+.progressDot::after {
+    content: '';
     position: absolute;
-    min-width: 20px;
-    height: 20px;
-    box-shadow: 1px 1px 10px var(--subText3);
+    inset: 2px;
     border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translateY(-50%) translateX(-50%);
+    opacity: 0.8;
 }
 
-.card [status="done"] {
-    background-image: url('./../assets/done.png');
-    background-size: 32px 32px;
-    background-repeat: no-repeat;
-    background-position: center;
+.red-card .progressDot::after { background-color: var(--red3); }
+.yellow-card .progressDot::after { background-color: var(--yellow2); }
+.green-card .progressDot::after { background-color: var(--green4); }
+
+.doneIcon {
+    font-size: 1.6rem;
+    color: var(--green3);
+    background-color: white;
+    border-radius: 50%;
+  
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.yellow-card [status="in progress"] {
-    &::before {
-        background-color: var(--yellow2);
-    }
-}
-
-.green-card [status="in progress"] {
-    &::before {
-        background-color: var(--green2);
-    }
-}
-
-.red-card [status="in progress"] {
-    &::before {
-
-        background-color: var(--red2);
-    }
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
 }

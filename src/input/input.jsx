@@ -1,9 +1,17 @@
 import React from 'react'
-import { useState } from 'react'
+import styles from './Input.module.css'
 
-export default function input({ type, placeholder }) {
-    const [value, setValue] = useState(null);
+export default function Input({ label, error, className, ...props }) {
     return (
-        <input type={type} placeholder={placeholder}></input>
+        <div className={`${styles.container} ${className || ''}`}>
+            {label && <label className={styles.label}>{label}</label>}
+
+            <input
+                className={`${styles.input} ${error ? styles.hasError : ''}`}
+                {...props}
+            />
+
+            {error && <span className={styles.errorText}>{error}</span>}
+        </div>
     )
 }

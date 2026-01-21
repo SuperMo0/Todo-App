@@ -2,25 +2,43 @@ import React, { useState } from 'react'
 import styles from './PriorityPicker.module.css'
 
 export default function PriorityPicker({ edit, priority, priorityRef }) {
+    const initialPriority = priority || "yellow-card";
+    const [picked, setPicked] = useState(initialPriority);
 
-    const [picked, setPicked] = useState(priority);
+    const options = [
+        { id: "red-card", label: "High", style: styles.red },
+        { id: "yellow-card", label: "Mid", style: styles.yellow },
+        { id: "green-card", label: "Low", style: styles.green },
+    ];
 
-    function handleClick(priority) {
-        setPicked(priority);
-        priorityRef.current = priority;
+    function handleClick(id) {
+        setPicked(id);
+        if (priorityRef) {
+            priorityRef.current = id;
+        }
     }
-
-    if (edit)
+    if (!edit) {
+        const current = options.find(opt => opt.id === priority) || options[1];
         return (
-            <div className={styles.container}>
-                <div onClick={() => { handleClick("red-card") }} className={styles.red} picked={String(picked == 'red-card')} >high</div>
-                <div onClick={() => { handleClick("yellow-card") }} className={styles.yellow} picked={String(picked == 'yellow-card')} >mid</div>
-                <div onClick={() => { handleClick("green-card") }} className={styles.green} picked={String(picked == 'green-card')} >low</div>
+            <div className={`${styles.badge} ${current.style}`}>
+                {current.label}
             </div>
         )
-    else {
-        if (priority == "red-card") return <div className={styles.red}>high</div>
-        else if (priority == "yellow-card") return <div className={styles.yellow}>mid</div>
-        else if (priority == "green-card") return <div className={styles.green}>low</div>
     }
+
+    return (
+        <div className={styles.container}>
+            {options.map((option) => (
+                <button
+                    key={option.id}
+                    type="button"
+                    onClick={() => handleClick(option.id)}
+                    className={`${styles.option} ${option.style}`}
+                    data-selected={picked === option.id}
+                >
+                    {option.label}
+                </button>
+            ))}
+        </div>
+    )
 }

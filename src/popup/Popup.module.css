@@ -1,0 +1,94 @@
+@import url('/index.css');
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(2px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.popup {
+    background-color: var(--surface);
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    width: min(350px, 90%);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.2rem;
+    animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.title {
+    color: var(--text2);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.message {
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+}
+
+/* --- Button Styles --- */
+
+.okButton {
+    padding: 0.6rem 2rem;
+    background-color: var(--blue2);
+    color: white;
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    width: 100%;
+}
+.okButton:hover { background-color: var(--blue3); }
+
+.cancelButton {
+    padding: 0.6rem 1.5rem;
+    background-color: transparent;
+    border: 1px solid var(--subText2);
+    color: var(--text);
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    flex: 1;
+}
+.cancelButton:hover { background-color: var(--bg); }
+
+.deleteButton {
+    padding: 0.6rem 1.5rem;
+    background-color: var(--red2);
+    color: white;
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    flex: 1;
+    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2);
+}
+.deleteButton:hover { background-color: var(--red3); transform: translateY(-1px); }

@@ -1,33 +1,52 @@
+import { getFullDate } from "./utils"
 
-import { getFullDate } from "./utils";
+export function reducerFunction(state, action) {
+    switch (action.type) {
+        case "add task":
+            return {
+                ...state,
+                taskList: [...state.taskList, action.task]
+            }
+        case "create new task":
+            return {
+                ...state,
+                taskList: [
+                    ...state.taskList,
+                    {
+                        id: crypto.randomUUID(),
+                        title: "New Task",
+                        description: "",
+                        dueDate: "",
+                        dateCreated: getFullDate(),
+                        tag: "General",
+                        priority: "yellow-card",
+                        status: "in progress"
+                    }
+                ]
+            }
 
+        case "edit task":
+            return {
+                ...state,
+                taskList: state.taskList.map((task) =>
+                    task.id === action.task.id ? action.task : task
+                )
+            }
 
-export function reducerFunction(Data, action) {
+        case "new user":
+            return {
+                name: action.name,
+                avatar: action.avatar,
+                taskList: []
+            }
 
-    if (action.type == "create new task") {
-        return { ...Data, taskList: [...Data.taskList, { id: crypto.randomUUID(), title: "", description: "", dueDate: "", dateCreated: getFullDate(), tag: "", priority: "yellow-card", status: "in progress" }] }
+        case "delete task":
+            return {
+                ...state,
+                taskList: state.taskList.filter((task) => task.id !== action.task.id)
+            }
+
+        default:
+            return state
     }
-
-    if (action.type == "edit task") {
-        {
-            return { ...Data };
-        }
-    }
-
-    if (action.type == "new user") {
-
-        return { name: action.name, avatar: action.avatar, taskList: [] };
-
-    }
-
-    if (action.type == "delete task") {
-        return { ...Data, taskList: [...Data.taskList.filter((v) => v.id != action.task.id)] }
-    }
-
-
-
-
-
-
-
 }

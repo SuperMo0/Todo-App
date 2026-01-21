@@ -1,57 +1,75 @@
 :root {
-    --small: 1rem;
-    --bg: #e6e5e5;
-    --subText: #888888;
-    --subText2: #A0A0A0;
-    --text: #333333;
-    --text2: #252525;
-    --subText3: #3f3e3e;
-    --blue1: #5E8BEF;
-    --blue2: #67adf8;
-    --blue3: #4AA0FF;
-    --green2: #66CC99;
-    --green1: #b8e6d0;
-    --red1: #FF8A8A;
-    --red2: #e74d4d;
-    --red3: #f55d5d;
-    --yellow1: #f8dead;
-    --yellow2: #FFC966;
-    --green3: #4CAF50;
-    --green4: #388E3C;
-    --brown: rgb(66, 55, 55);
+    /* --- Improved Palette --- */
+    /* Background: Cool Gray (Darker than before to create contrast) */
+    --bg: #EEF2F6;
+    
+    /* Surface: Off-White (Less harsh than pure #FFF) */
+    --surface: #FFFFFF; 
+    
+    /* Text */
+    --text: #334155;
+    --text2: #1E293B;
+    --subText: #94A3B8;
+    --subText3: #64748B;
+
+    /* Accents */
+    --blue1: #60A5FA;
+    --blue2: #3B82F6;
+    --blue3: #2563EB;
+    
+    --green1: #D1FAE5;
+    --green2: #34D399;
+    --green3: #10B981;
+    --green4: #059669;
+    
+    --red1: #FEE2E2;
+    --red2: #F87171;
+    --red3: #EF4444;
+    
+    --yellow1: #FEF3C7;
+    --yellow2: #F59E0B;
+    
+    --radius: 16px;
+
+    /* --- IMPROVED ELEVATION --- */
+    /* Stronger, "floating" shadow */
+    --shadow-float: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 5px 10px -5px rgba(0, 0, 0, 0.05);
+    /* Soft internal shadow for inputs */
+    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 }
 
 #root {
-    background-color: #252525;
+    background-color: var(--bg);
+    min-height: 100vh;
 }
 
 * {
-    font-family: "Poppins", 'sans-serif', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: "Poppins", system-ui, sans-serif;
     margin: 0;
     padding: 0;
     list-style: none;
     box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--bg);
 }
 
 button {
     cursor: pointer;
+    font-family: inherit;
+    border: none;
 }
 
 img {
     display: block;
+    max-width: 100%;
 }
 
-input,
-button {
-    border: none;
-}
-
-input:focus {
-    outline: none;
-
-}
-
+input:focus,
 [contentEditable="true"]:focus {
-    border: none;
-    outline: none;
+    outline: 2px solid var(--blue2);
+    outline-offset: 1px;
+    border-radius: 6px;
 }
